@@ -9,17 +9,12 @@ from model import ModeloEPP
 modelo = ModeloEPP()
 
 def detectar_epp(imagen):
-    # Aqui analizo la imagen y genero el reporte de EPP
     if imagen is None:
         return "Por favor sube una imagen."
 
-    # Convierto la imagen al formato correcto
     imagen_pil = Image.fromarray(imagen)
-
-    # Analizo la imagen con el modelo
     resultados = modelo.analizar(imagen_pil)
 
-    # Genero el reporte con los resultados
     reporte = "Resultado del analisis de EPP\n\n"
     faltantes = []
 
@@ -30,7 +25,6 @@ def detectar_epp(imagen):
             reporte += f"- {equipo.capitalize()}: No detectado\n"
             faltantes.append(equipo)
 
-    # Aqui genero la alerta si falta algun equipo
     if faltantes:
         reporte += f"\nALERTA: Faltan los siguientes equipos: {', '.join(faltantes)}"
     else:
@@ -38,7 +32,6 @@ def detectar_epp(imagen):
 
     return reporte
 
-# Creo la interfaz con Gradio
 interfaz = gr.Interface(
     fn=detectar_epp,
     inputs=gr.Image(label="Sube una imagen del trabajador"),
@@ -47,6 +40,5 @@ interfaz = gr.Interface(
     description="Sube una imagen de un trabajador y la IA analizara si tiene el equipo de seguridad completo."
 )
 
-# Aqui es donde inicio la aplicacion
 if __name__ == "__main__":
     interfaz.launch()
